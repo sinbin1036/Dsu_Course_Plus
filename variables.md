@@ -15,7 +15,6 @@
 | `time`       | int    | 교시 번호          | 3              |
 | `credit`     | int    | 학점              | 3              |
 | `type`       | string | 전공/교양/선택     | "전공"         |
-| `classroom`  | string | 강의실 (선택 항목) | "정보B203"     |
 
 ---
 
