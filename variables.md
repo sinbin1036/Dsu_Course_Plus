@@ -13,7 +13,7 @@
 | `professor`  | string | 담당 교수 이름     | "김교수"       |
 | `schedule`       | list    | 요일. 교시번호          | 월, 2              |
 | `credit`     | int    | 학점              | 3              |
-| `type`       | string | 전공/교양/선택     | "전공"         | //미정
+| `type`       | string | 전공/교양/선택 -아직 미구현-    | "전공"         | 
 
 ---
 
