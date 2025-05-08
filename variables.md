@@ -11,8 +11,7 @@
 | `subject_id` | string | 과목 고유 코드     | "CSE101"       |
 | `subject_name`       | string | 과목명            | "인공지능개론" |
 | `professor`  | string | 담당 교수 이름     | "김교수"       |
-| `day`        | string | 수업 요일          | "화"           |
-| `time`       | int    | 교시 번호          | 3              |
+| `schedule`       | list    | 요일. 교시번호          | 월, 2              |
 | `credit`     | int    | 학점              | 3              |
 | `type`       | string | 전공/교양/선택     | "전공"         |
 
