@@ -15,7 +15,7 @@ from selenium.webdriver.support import expected_conditions as EC
 
 # === Chrome Driver Setup ===
 base_dir = os.path.dirname(os.path.abspath(__file__))
-driver_path = os.path.join(base_dir, '..', 'chromdriver', 'chromdriver.exe')
+driver_path = os.path.join(base_dir, '..', 'chromedriver', 'chromedriver.exe')
 
 options = Options()
 options.add_argument("--no-sandbox")
