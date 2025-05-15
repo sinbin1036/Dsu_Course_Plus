@@ -42,13 +42,14 @@ for frame in driver.find_elements(By.TAG_NAME, "iframe"):
     driver.switch_to.default_content()
     driver.switch_to.frame(frame)
     try:
-        wait.until(EC.presence_of_element_located((By.ID, "sDept")))
+        wait.until(EC.presence_of_element_located((By.ID, "pComboIsu")))
+        print("iframe 진입 완료")
         break
     except:
         continue
 
 # === Dropdown 정의 ===
-type_select = Select(driver.find_element(By.ID, "sItype"))
+type_select = Select(driver.find_element(By.ID, "pComboIsu"))
 type_map = {
     '교양필수': [],
     '교선균형': ['인간과역사', '사회와가치', '자연과기술', '문학과예술', '세계와문화'],
@@ -56,9 +57,9 @@ type_map = {
     '전공필수': []
 }
 
-departments = Select(driver.find_element(By.ID, "sDept"))
-grades = Select(driver.find_element(By.ID, "sGrade"))
-area_select = lambda: Select(driver.find_element(By.ID, "sArea"))
+departments = Select(driver.find_element(By.ID, "pComboHakgwa"))
+grades = Select(driver.find_element(By.ID, "pComboGrade"))
+# area_select = lambda: Select(driver.find_element(By.ID, "sArea")) 여기줄은 오류로 인한 제외
 
 results = []
 
@@ -70,7 +71,6 @@ for type_name, area_list in type_map.items():
     if type_name == '교선균형':
         for area in area_list:
             try:
-                area_select().select_by_visible_text(area)
                 time.sleep(0.6)
                 subjects = driver.find_elements(By.CSS_SELECTOR, "#gridSubjL tr[role='row']")[1:]
                 for subj in subjects:
