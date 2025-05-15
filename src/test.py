@@ -12,6 +12,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver import ActionChains
 
 # === Chrome Driver Setup ===
 base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -50,6 +51,8 @@ for frame in driver.find_elements(By.TAG_NAME, "iframe"):
 
 # === Dropdown 정의 ===
 type_select = Select(driver.find_element(By.ID, "pComboIsu"))
+departments = Select(driver.find_element(By.ID, "pComboHakgwa"))
+grades = Select(driver.find_element(By.ID, "pComboGrade"))
 type_map = {
     '교양필수': [],
     '교선균형': ['인간과역사', '사회와가치', '자연과기술', '문학과예술', '세계와문화'],
@@ -57,34 +60,50 @@ type_map = {
     '전공필수': []
 }
 
-departments = Select(driver.find_element(By.ID, "pComboHakgwa"))
-grades = Select(driver.find_element(By.ID, "pComboGrade"))
-# area_select = lambda: Select(driver.find_element(By.ID, "sArea")) 여기줄은 오류로 인한 제외
+
+area_select = lambda: Select(driver.find_element(By.ID, "sArea")) #여기줄은 오류로 인한 제외
 
 results = []
 
 # === 크롤링 루프 ===
 for type_name, area_list in type_map.items():
-    type_select.select_by_visible_text(type_name)
-    time.sleep(0.7)
+    try:
+        print(f"[INFO] 이수구분 선택 중: {type_name}")
+        type_select.select_by_visible_text(type_name)
+        time.sleep(0.7)
 
-    if type_name == '교선균형':
-        for area in area_list:
-            try:
-                time.sleep(0.6)
-                subjects = driver.find_elements(By.CSS_SELECTOR, "#gridSubjL tr[role='row']")[1:]
-                for subj in subjects:
+        if area_list:
+            for area in area_list:
+                try:
+                    print(f"[INFO] 영역 선택 중: {area}")
+                    area_select().select_by_visible_text(area)
+                    time.sleep(0.6)
+                except Exception as e:
+                    print(f"[ERROR] 영역 선택 실패: {e}")
+                    continue
+
+                subjects = driver.find_elements(By.CSS_SELECTOR, "#GridArea.ui-jqgrid-btable tbody tr[id]")
+                print(f"[DEBUG] {len(subjects)}개 과목 로드됨")
+
+                for i, subj in enumerate(subjects):
                     try:
-                        subj.click()
+                        print(f"[DEBUG] {i+1}번째 과목 클릭 시도")
+                        driver.execute_script("arguments[0].scrollIntoView(true);", subj)
+                        ActionChains(driver).move_to_element(subj).pause(0.2).click(subj).perform()
+
                         wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#gridSubjR tr[role='row']")))
-                        time.sleep(0.5)
+                        wait.until(EC.invisibility_of_element_located((By.ID, "load_gridSubjR")))
 
                         soup = BeautifulSoup(driver.page_source, "html.parser")
-                        details = soup.select("#gridSubjR tr[role='row']")
-                        for row in details:
+                        rows = soup.select("#gridSubjR tr[role='row']")
+                        print(f"[DEBUG] 상세 {len(rows)}행 파싱 중")
+
+                        for row in rows:
                             cols = row.select('td[role="gridcell"]')
                             if len(cols) < 10:
+                                print("[WARN] 컬럼 부족 행 건너뜀")
                                 continue
+
                             try:
                                 class_id = cols[1].get_text(strip=True)
                                 class_num = cols[2].get_text(strip=True)
@@ -93,11 +112,11 @@ for type_name, area_list in type_map.items():
                                 credit = int(float(credit_text)) if credit_text else 0
                                 professor = cols[7].get_text(strip=True)
                                 time_raw = cols[8].get_text(separator=" / ", strip=True)
+                                print(f"[DEBUG] 시간 원문: {time_raw}")
 
                                 schedule = []
-                                time_pattern = re.findall(r'(\w)\s*(\d+)[^\d]?-?\s*(\d+)?', time_raw)
-                                for d, start, end in time_pattern:
-                                    for t in range(int(start), int(end or start) + 1):
+                                for d, start, end in re.findall(r'(\w)\s*(\d+)[^\d]?-?\s*(\d+)?', time_raw):
+                                    for t in range(int(start), int(end or start)+1):
                                         schedule.append({"day": d, "time": t})
 
                                 results.append({
@@ -110,68 +129,81 @@ for type_name, area_list in type_map.items():
                                     "type": type_name,
                                     "area": area
                                 })
-                            except:
-                                continue
-                    except:
-                        continue
-            except:
-                continue
-    else:
-        for dept_opt in departments.options:
-            dept = dept_opt.text.strip()
-            if not dept or dept == "학과":
-                continue
-            departments.select_by_visible_text(dept)
+                                print(f"[SUCCESS] 저장 완료: {class_name}")
+                            except Exception as e:
+                                print(f"[ERROR] 상세 행 처리 실패: {e}")
+                    except Exception as e:
+                        print(f"[ERROR] 과목 클릭 실패: {e}")
+        else:
+            for dept_i, dept_opt in enumerate(departments.options):
+                if dept_i >= 3: break
+                dept = dept_opt.text.strip()
+                if not dept or dept == "학과": continue
+                print(f"[INFO] 학과 선택 중: {dept}")
+                departments.select_by_visible_text(dept)
 
-            for grade_opt in grades.options:
-                grade = grade_opt.text.strip()
-                if not grade or grade == "학년":
-                    continue
-                grades.select_by_visible_text(grade)
-                time.sleep(0.6)
+                for grade_opt in grades.options:
+                    grade = grade_opt.text.strip()
+                    if not grade or grade == "학년": continue
+                    print(f"[INFO] 학년 선택 중: {grade}")
+                    grades.select_by_visible_text(grade)
+                    time.sleep(0.6)
 
-                subjects = driver.find_elements(By.CSS_SELECTOR, "#gridSubjL tr[role='row']")[1:]
-                for subj in subjects:
-                    try:
-                        subj.click()
-                        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#gridSubjR tr[role='row']")))
-                        time.sleep(0.5)
+                    subjects = driver.find_elements(By.CSS_SELECTOR, "#GridArea.ui-jqgrid-btable tbody tr[id]")
+                    print(f"[DEBUG] {len(subjects)}개 과목 로드됨")
 
-                        soup = BeautifulSoup(driver.page_source, "html.parser")
-                        details = soup.select("#gridSubjR tr[role='row']")
-                        for row in details:
-                            cols = row.select('td[role="gridcell"]')
-                            if len(cols) < 10:
-                                continue
-                            try:
-                                class_id = cols[1].get_text(strip=True)
-                                class_num = cols[2].get_text(strip=True)
-                                class_name = cols[3].get_text(strip=True)
-                                credit_text = cols[5].get_text(strip=True)
-                                credit = int(float(credit_text)) if credit_text else 0
-                                professor = cols[7].get_text(strip=True)
-                                time_raw = cols[8].get_text(separator=" / ", strip=True)
+                    for i, subj in enumerate(subjects):
+                        try:
+                            print(f"[DEBUG] {i+1}번째 과목 클릭 시도")
+                            driver.execute_script("arguments[0].scrollIntoView(true);", subj)
+                            ActionChains(driver).move_to_element(subj).pause(0.2).click(subj).perform()
+                            
+                            wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#gridSubjR tr[role='row']")))
+                            wait.until(EC.invisibility_of_element_located((By.ID, "load_gridSubjR")))
 
-                                schedule = []
-                                time_pattern = re.findall(r'(\w)\s*(\d+)[^\d]?-?\s*(\d+)?', time_raw)
-                                for d, start, end in time_pattern:
-                                    for t in range(int(start), int(end or start) + 1):
-                                        schedule.append({"day": d, "time": t})
+                            soup = BeautifulSoup(driver.page_source, "html.parser")
+                            rows = soup.select("#gridSubjR tr[role='row']")
+                            print(f"[DEBUG] 상세 {len(rows)}행 파싱 중")
 
-                                results.append({
-                                    "class_id": class_id,
-                                    "class_num": int(class_num) if class_num.isdigit() else 0,
-                                    "class_name": class_name,
-                                    "professor": professor,
-                                    "credit": credit,
-                                    "schedule": schedule,
-                                    "type": type_name,
-                                    "area": None
-                                })
-                            except:
-                                continue
-                    except:
-                        continue
+                            for row in rows:
+                                cols = row.select('td[role="gridcell"]')
+                                if len(cols) < 10:
+                                    print("[WARN] 컬럼 부족 행 건너뜀")
+                                    continue
+
+                                try:
+                                    class_id = cols[1].get_text(strip=True)
+                                    class_num = cols[2].get_text(strip=True)
+                                    class_name = cols[3].get_text(strip=True)
+                                    credit_text = cols[5].get_text(strip=True)
+                                    credit = int(float(credit_text)) if credit_text else 0
+                                    professor = cols[7].get_text(strip=True)
+                                    time_raw = cols[8].get_text(separator=" / ", strip=True)
+                                    print(f"[DEBUG] 시간 원문: {time_raw}")
+
+                                    schedule = []
+                                    for d, start, end in re.findall(r'(\w)\s*(\d+)[^\d]?-?\s*(\d+)?', time_raw):
+                                        for t in range(int(start), int(end or start)+1):
+                                            schedule.append({"day": d, "time": t})
+
+                                    results.append({
+                                        "class_id": class_id,
+                                        "class_num": int(class_num) if class_num.isdigit() else 0,
+                                        "class_name": class_name,
+                                        "professor": professor,
+                                        "credit": credit,
+                                        "schedule": schedule,
+                                        "type": type_name,
+                                        "area": None
+                                    })
+                                    print(f"[SUCCESS] 저장 완료: {class_name}")
+                                except Exception as e:
+                                    print(f"[ERROR] 상세 행 처리 실패: {e}")
+                        except Exception as e:
+                            print(f"[ERROR] 과목 클릭 실패: {e}")
+    except Exception as e:
+        print(f"[ERROR] 이수구분 처리 실패: {e}")
+
 
 # === Save to JSON & CSV ===
 with open("dsu_courses.json", "w", encoding="utf-8") as f:
