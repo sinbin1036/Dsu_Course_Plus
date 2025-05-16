@@ -2,3 +2,4 @@
 .chromedriver/
 
 *.exe
+dsu_courses.*

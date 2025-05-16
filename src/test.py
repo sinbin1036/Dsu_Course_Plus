@@ -50,9 +50,9 @@ for frame in driver.find_elements(By.TAG_NAME, "iframe"):
         continue
 
 # === Dropdown 정의 ===
-type_select = Select(driver.find_element(By.ID, "pComboIsu"))
-departments = Select(driver.find_element(By.ID, "pComboHakgwa"))
-grades = Select(driver.find_element(By.ID, "pComboGrade"))
+type_select = Select(driver.find_element(By.ID, "pComboIsu")) #이수구분
+departments = Select(driver.find_element(By.ID, "pComboHakgwa"))#학과
+grades = Select(driver.find_element(By.ID, "pComboGrade")) #학년
 type_map = {
     '교양필수': [],
     '교선균형': ['인간과역사', '사회와가치', '자연과기술', '문학과예술', '세계와문화'],
@@ -61,11 +61,72 @@ type_map = {
 }
 
 
-area_select = lambda: Select(driver.find_element(By.ID, "sArea")) #여기줄은 오류로 인한 제외
+area_select = lambda: Select(driver.find_element(By.ID, "pComboTheme")) #교선중 자연과학 이런거
 
 results = []
 
 # === 크롤링 루프 ===
+
+## === 클릭 로직 ===
+def click_first_td(subj):
+    try:
+        td = subj.find_element(By.CSS_SELECTOR, "td[role='gridcell']")
+        driver.execute_script("arguments[0].scrollIntoView({behavior: 'instant', block: 'center'});", td)
+        driver.execute_script("""
+            const evt = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
+            arguments[0].dispatchEvent(evt);
+        """, td)
+        return True
+    except Exception as e:
+        print(f"[ERROR] TD 클릭 실패: {e}")
+        return False
+
+## === 크롤링 로직 ===
+def parse_subject_detail(type_name, area):
+    try:
+        time.sleep(2)
+        rows = driver.find_elements(By.CSS_SELECTOR, "#GridLecture tr[role='row']")
+    except Exception as e:
+        print(f"[ERROR] 로딩 대기 실패: {e}")
+        return
+
+    print(f"[DEBUG] rows 개수: {len(rows)}")
+    for idx, row in enumerate(rows):
+        print(f"[DEBUG] row[{idx}] HTML: {row.get_attribute('outerHTML')}")
+        cols = row.find_elements(By.CSS_SELECTOR, 'td[role="gridcell"]')
+        print(f"[DEBUG] row[{idx}] cols 수: {len(cols)}")
+        if len(cols) < 10:
+            continue
+
+        try:
+            print(f"[DEBUG] 값 추출 시도")
+            class_id = cols[1].text.strip()
+            class_num = cols[2].text.strip()
+            class_name = cols[3].text.strip()
+            credit_text = cols[5].text.strip()
+            credit = int(float(credit_text)) if credit_text else 0
+            professor = cols[7].text.strip()
+            time_raw = cols[8].text.strip()
+
+            print(f"[RESULT] {class_id=}, {class_num=}, {class_name=}, {credit_text=}, {professor=}, {time_raw=}")
+            schedule = []
+            for d, start, end in re.findall(r'(\w)\s*(\d+)[^\d]?-?\s*(\d+)?', time_raw):
+                for t in range(int(start), int(end or start)+1):
+                    schedule.append({"day": d, "time": t})
+
+            results.append({
+                "class_id": class_id,
+                "class_num": int(class_num) if class_num.isdigit() else 0,
+                "class_name": class_name,
+                "professor": professor,
+                "credit": credit,
+                "schedule": schedule,
+                "type": type_name,
+                "area": area
+            })
+        except Exception as e:
+            print(f"[ERROR] 상세 행 처리 실패: {e}")
+
 for type_name, area_list in type_map.items():
     try:
         print(f"[INFO] 이수구분 선택 중: {type_name}")
@@ -76,7 +137,7 @@ for type_name, area_list in type_map.items():
             for area in area_list:
                 try:
                     print(f"[INFO] 영역 선택 중: {area}")
-                    area_select().select_by_visible_text(area)
+                    Select(driver.find_element(By.ID, "pComboTheme")).select_by_visible_text(area)
                     time.sleep(0.6)
                 except Exception as e:
                     print(f"[ERROR] 영역 선택 실패: {e}")
@@ -86,57 +147,13 @@ for type_name, area_list in type_map.items():
                 print(f"[DEBUG] {len(subjects)}개 과목 로드됨")
 
                 for i, subj in enumerate(subjects):
-                    try:
-                        print(f"[DEBUG] {i+1}번째 과목 클릭 시도")
-                        driver.execute_script("arguments[0].scrollIntoView(true);", subj)
-                        ActionChains(driver).move_to_element(subj).pause(0.2).click(subj).perform()
-
-                        wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#gridSubjR tr[role='row']")))
-                        wait.until(EC.invisibility_of_element_located((By.ID, "load_gridSubjR")))
-
-                        soup = BeautifulSoup(driver.page_source, "html.parser")
-                        rows = soup.select("#gridSubjR tr[role='row']")
-                        print(f"[DEBUG] 상세 {len(rows)}행 파싱 중")
-
-                        for row in rows:
-                            cols = row.select('td[role="gridcell"]')
-                            if len(cols) < 10:
-                                print("[WARN] 컬럼 부족 행 건너뜀")
-                                continue
-
-                            try:
-                                class_id = cols[1].get_text(strip=True)
-                                class_num = cols[2].get_text(strip=True)
-                                class_name = cols[3].get_text(strip=True)
-                                credit_text = cols[5].get_text(strip=True)
-                                credit = int(float(credit_text)) if credit_text else 0
-                                professor = cols[7].get_text(strip=True)
-                                time_raw = cols[8].get_text(separator=" / ", strip=True)
-                                print(f"[DEBUG] 시간 원문: {time_raw}")
-
-                                schedule = []
-                                for d, start, end in re.findall(r'(\w)\s*(\d+)[^\d]?-?\s*(\d+)?', time_raw):
-                                    for t in range(int(start), int(end or start)+1):
-                                        schedule.append({"day": d, "time": t})
-
-                                results.append({
-                                    "class_id": class_id,
-                                    "class_num": int(class_num) if class_num.isdigit() else 0,
-                                    "class_name": class_name,
-                                    "professor": professor,
-                                    "credit": credit,
-                                    "schedule": schedule,
-                                    "type": type_name,
-                                    "area": area
-                                })
-                                print(f"[SUCCESS] 저장 완료: {class_name}")
-                            except Exception as e:
-                                print(f"[ERROR] 상세 행 처리 실패: {e}")
-                    except Exception as e:
-                        print(f"[ERROR] 과목 클릭 실패: {e}")
+                    print(f"[DEBUG] {i+1}번째 과목 클릭 시도")
+                    if not click_first_td(subj):
+                        print(f"[WARN] 클릭 실패했지만 강제로 상세정보 진입 시도 중")
+                    parse_subject_detail(type_name, area)
         else:
             for dept_i, dept_opt in enumerate(departments.options):
-                if dept_i >= 3: break
+                if dept_i >= 1: break
                 dept = dept_opt.text.strip()
                 if not dept or dept == "학과": continue
                 print(f"[INFO] 학과 선택 중: {dept}")
@@ -153,54 +170,10 @@ for type_name, area_list in type_map.items():
                     print(f"[DEBUG] {len(subjects)}개 과목 로드됨")
 
                     for i, subj in enumerate(subjects):
-                        try:
-                            print(f"[DEBUG] {i+1}번째 과목 클릭 시도")
-                            driver.execute_script("arguments[0].scrollIntoView(true);", subj)
-                            ActionChains(driver).move_to_element(subj).pause(0.2).click(subj).perform()
-                            
-                            wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#gridSubjR tr[role='row']")))
-                            wait.until(EC.invisibility_of_element_located((By.ID, "load_gridSubjR")))
-
-                            soup = BeautifulSoup(driver.page_source, "html.parser")
-                            rows = soup.select("#gridSubjR tr[role='row']")
-                            print(f"[DEBUG] 상세 {len(rows)}행 파싱 중")
-
-                            for row in rows:
-                                cols = row.select('td[role="gridcell"]')
-                                if len(cols) < 10:
-                                    print("[WARN] 컬럼 부족 행 건너뜀")
-                                    continue
-
-                                try:
-                                    class_id = cols[1].get_text(strip=True)
-                                    class_num = cols[2].get_text(strip=True)
-                                    class_name = cols[3].get_text(strip=True)
-                                    credit_text = cols[5].get_text(strip=True)
-                                    credit = int(float(credit_text)) if credit_text else 0
-                                    professor = cols[7].get_text(strip=True)
-                                    time_raw = cols[8].get_text(separator=" / ", strip=True)
-                                    print(f"[DEBUG] 시간 원문: {time_raw}")
-
-                                    schedule = []
-                                    for d, start, end in re.findall(r'(\w)\s*(\d+)[^\d]?-?\s*(\d+)?', time_raw):
-                                        for t in range(int(start), int(end or start)+1):
-                                            schedule.append({"day": d, "time": t})
-
-                                    results.append({
-                                        "class_id": class_id,
-                                        "class_num": int(class_num) if class_num.isdigit() else 0,
-                                        "class_name": class_name,
-                                        "professor": professor,
-                                        "credit": credit,
-                                        "schedule": schedule,
-                                        "type": type_name,
-                                        "area": None
-                                    })
-                                    print(f"[SUCCESS] 저장 완료: {class_name}")
-                                except Exception as e:
-                                    print(f"[ERROR] 상세 행 처리 실패: {e}")
-                        except Exception as e:
-                            print(f"[ERROR] 과목 클릭 실패: {e}")
+                        print(f"[DEBUG] {i+1}번째 과목 클릭 시도")
+                        if not click_first_td(subj):
+                            print(f"[WARN] 클릭 실패했지만 강제로 상세정보 진입 시도 중")
+                        parse_subject_detail(type_name, None)
     except Exception as e:
         print(f"[ERROR] 이수구분 처리 실패: {e}")
 
