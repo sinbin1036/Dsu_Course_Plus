@@ -3,14 +3,12 @@ import time
 import re
 import json
 import csv
-from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import WebDriverWait, Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver import ActionChains
 
 # === Chrome Driver Setup ===
 base_dir = os.path.dirname(os.path.abspath(__file__))
