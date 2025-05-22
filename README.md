@@ -54,6 +54,60 @@
 
 ---
 
+## SETUP
+
+### 파이썬 설치
+https://www.python.org/downloads/
+
+```
+python --version
+```
+
+```
+pip --version
+```
+제대로 설치되었는지 확인
+
+
+### vscode 필수 확장
+
+✅ FastAPI + Python 개발용 필수 확장
+Python
+
+⛳ 가장 기본. Linting, Debugging, 가상환경, 실행 다 됨
+
+개발자: Microsoft
+
+Pylance
+
+🧠 자동완성 + 타입 추론 + IntelliSense 강화
+
+꼭 Python 확장과 함께 써야 함
+
+Jinja
+
+만약 FastAPI에서 HTML 템플릿 쓸 생각 있다면 (Jinja2 지원)
+
+REST Client
+
+💡 FastAPI 테스트할 때, HTTP 요청을 .http 파일에서 바로 보낼 수 있음 (Postman 대체)
+
+SQLite Viewer / SQLite
+
+📊 .db 파일 직접 보고, 쿼리 날릴 수 있음
+
+### chromedriver
+
+https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.94/win64/chromedriver-win64.zip
+
+### install module
+
+```
+pip install selenium
+```
+
+---
+
 ## 🤩 주요 API 명세
 
 ```
@@ -65,14 +119,17 @@ GET /subjects?day=화&time=3&type=전공
 ```json
 [
   {
-    "subject_id": "CSE101",
-    "name": "인공지능과로",
-    "professor": "김교수",
-    "day": "화",
-    "time": 3,
+    "dept": 소프트웨어학과,
+    "grade": 3학년,
+    "class_id": 123456,
+    "class_num": 101,
+    "class_name": 소프트웨어개발실습3,
+    "professor": 김동현,
     "credit": 3,
-    "type": "전공",
-    "classroom": "정보B203"
+    "schedule": {day: 화 ,time: 1-2},
+    "type": 전공필수,
+    "general_area": UIT관,
+    "lecture_area": null 
   }
 ]
 ```
