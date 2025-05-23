@@ -67,7 +67,14 @@ FIELDNAMES=["dept", "grade","class_id", "class_num", "class_name", "professor", 
 results = []
 
 # === 저장 로직 ===
-def save_results_partial(json_path="dsu_courses.json", csv_path="dsu_courses.csv"):
+def save_results_partial(results, fieldnames, json_filename="dsu_courses.json", csv_filename="dsu_courses.csv"):
+    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    save_dir = os.path.join(base_dir, "db")
+    os.makedirs(save_dir, exist_ok=True)
+
+    json_path = os.path.join(save_dir, json_filename)
+    csv_path = os.path.join(save_dir, csv_filename)
+
     # JSON 저장
     with open(json_path, "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False, indent=2)
@@ -75,7 +82,7 @@ def save_results_partial(json_path="dsu_courses.json", csv_path="dsu_courses.csv
 
     # CSV 저장
     with open(csv_path, "w", encoding="utf-8", newline='') as f:
-        writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
+        writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for item in results:
             item_copy = item.copy()
@@ -151,7 +158,7 @@ def parse_subject_detail(type_name, dept_name=None, grade=None, area=None):
                 "lecture_area": lecture_area 
             })
             if len(results) % 10 == 0:
-                save_results_partial()
+                save_results_partial(results, fieldnames=FIELDNAMES)
         except Exception as e:
             print(f"[ERROR] 상세 행 처리 실패: {e}")
 
