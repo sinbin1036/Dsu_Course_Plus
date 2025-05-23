@@ -56,7 +56,7 @@
 
 ## SETUP
 
-### 파이썬 설치
+### 1. 파이썬 설치
 https://www.python.org/downloads/
 
 ```
@@ -69,26 +69,26 @@ pip --version
 제대로 설치되었는지 확인
 
 
-### vscode 필수 확장
+### 2. vscode 필수 확장
 
-✅ FastAPI + Python 개발용 필수 확장
+#### ✅ FastAPI + Python 개발용 필수 확장
 Python
 
 ⛳ 가장 기본. Linting, Debugging, 가상환경, 실행 다 됨
 
 개발자: Microsoft
 
-Pylance
+#### Pylance
 
 🧠 자동완성 + 타입 추론 + IntelliSense 강화
 
 꼭 Python 확장과 함께 써야 함
 
-Jinja
+#### Jinja
 
 만약 FastAPI에서 HTML 템플릿 쓸 생각 있다면 (Jinja2 지원)
 
-REST Client
+#### REST Client
 
 💡 FastAPI 테스트할 때, HTTP 요청을 .http 파일에서 바로 보낼 수 있음 (Postman 대체)
 
@@ -100,7 +100,7 @@ SQLite Viewer / SQLite
 
 https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.94/win64/chromedriver-win64.zip
 
-### install module
+### 3. install module
 
 ```
 pip install selenium
@@ -164,4 +164,5 @@ GET /subjects?day=화&time=3&type=전공
 > **"우리는 학교 수강시청 시스템에 부담을 주지 않으며,  
 > 사용자가 수업을 효율적으로 찾을 수 있도록 도움을 주는 앱을 만듭니다."**  
 > 관리자 단일 계정으로 1회만 크롤링해서 효율성과 안정성 모두 확답합니다
+
 
