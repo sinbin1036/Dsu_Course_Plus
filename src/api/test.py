@@ -3,10 +3,14 @@ from pydantic import BaseModel
 from typing import List, Optional
 import sqlite3
 import json
+import os
 
 app = FastAPI()
 
-DB_PATH = "./db/main_dsu_courses.db"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(os.path.dirname(__file__), "..", "db", "main_dsu_courses.db")
+print("[DEBUG] DB 경로:", DB_PATH)
+print("[DEBUG] 존재 여부:", os.path.exists(DB_PATH))
 
 class Schedule(BaseModel):
     day: str
@@ -30,6 +34,7 @@ class Subject(BaseModel):
 def get_subjects(
     day: Optional[str] = Query(None),
     time: Optional[int] = Query(None),
+    dept: Optional[str] = Query(None),
     type: Optional[str] = Query(None),
     professor: Optional[str] = Query(None),
 ):
@@ -56,6 +61,9 @@ def get_subjects(
     if type:
         query += " AND s.type = ?"
         params.append(type)
+    if dept:
+        query += " AND s.dept = ?"
+        params.append(dept)
     if professor:
         query += " AND s.professor LIKE ?"
         params.append(f"%{professor}%")
@@ -106,4 +114,3 @@ def get_subjects(
     print("=== [DEBUG] 최종 결과 개수 ===")
     print(len(results))
     return results
-
