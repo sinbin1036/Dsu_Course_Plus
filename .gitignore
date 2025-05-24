@@ -1,5 +1,8 @@
 #크롬드라이버 파일 제외
 .chromedriver/
 
+#파이썬 캐시 파일
+__pycache__/
+
 *.exe
 dsu_courses.*
