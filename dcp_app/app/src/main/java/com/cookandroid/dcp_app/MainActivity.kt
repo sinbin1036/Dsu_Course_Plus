@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
         val btnHelp = drawerMenuView.findViewById<ImageView>(R.id.btnHelp)
 
         btnLogout.setOnClickListener {
-            // 로그아웃 처리
+            startActivity(Intent(this, LoginActivity::class.java))
         }
         btnHelp.setOnClickListener {
             // 도움말 처리
