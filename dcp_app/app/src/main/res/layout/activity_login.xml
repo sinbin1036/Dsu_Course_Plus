@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#222222"
+    android:gravity="center"
+    android:padding="24dp">
+
+    <!-- 앱 제목 -->
+    <TextView
+        android:text="DSP"
+        android:textSize="48sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:layout_marginBottom="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- 부제목 -->
+    <TextView
+        android:text="DSU Course Plus"
+        android:textSize="18sp"
+        android:textColor="#CCCCCC"
+        android:layout_marginBottom="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <!-- 로그인 입력 카드 -->
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="#cc444444"
+        android:padding="24dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:clipToOutline="true"
+        android:backgroundTintMode="src_over">
+
+        <!-- 이메일 입력 -->
+        <EditText
+            android:id="@+id/editEmail"
+            android:hint="E-mail"
+            android:inputType="textEmailAddress"
+            android:autofillHints="emailAddress"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="12dp"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text" />
+
+        <!-- 비밀번호 입력 -->
+        <EditText
+            android:id="@+id/editPassword"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:autofillHints="password"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginBottom="24dp"
+            android:padding="12dp"
+            android:background="@android:drawable/edit_text" />
+
+        <!-- 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnLogin"
+                android:text="로그인"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:textColor="#000000"
+                android:background="@drawable/rounded_button"
+                android:layout_marginEnd="8dp" />
+
+            <Button
+                android:id="@+id/btnSignup"
+                android:text="회원가입"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_weight="1"
+                android:textColor="#000000"
+                android:background="@drawable/rounded_button" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
