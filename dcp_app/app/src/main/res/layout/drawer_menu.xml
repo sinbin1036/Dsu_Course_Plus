@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:layout_gravity="end"
+    android:background="#444444"
+    android:orientation="vertical"
+    android:paddingTop="32dp"
+    android:paddingBottom="32dp">
+
+    <!-- 상단 오른쪽 help 아이콘 -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <ImageView
+            android:id="@+id/btnHelp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="end|top"
+            android:src="@drawable/help"
+            android:contentDescription="도움말"
+            android:padding="4dp"
+            android:background="?attr/selectableItemBackgroundBorderless"/>
+    </FrameLayout>
+
+    <!-- 공간 채우기 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- 하단 라운드 흰색 로그아웃 버튼 -->
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="160dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center_horizontal"
+        android:text="로그아웃"
+        android:textColor="#000000"
+        android:backgroundTint="@color/white"
+        android:textSize="14sp"
+        android:padding="0dp"/>
+</LinearLayout>
+
