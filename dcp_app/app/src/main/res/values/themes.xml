@@ -6,4 +6,33 @@
     </style>
 
     <style name="Theme.Dcp_app" parent="Base.Theme.Dcp_app" />
+
+    <style name="DayCell">
+        <item name="android:layout_width">63.2dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/bg_table_cell</item>
+    </style>
+
+    <style name="TimeCell">
+        <item name="android:layout_width">55dp</item>
+        <item name="android:layout_height">61.5dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/bg_table_cell</item>
+    </style>
+
+    <style name="TableCell">
+        <item name="android:layout_width">63.2dp</item>
+        <item name="android:layout_height">61.5dp</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:background">@drawable/bg_table_cell</item>
+
+    </style>
+
 </resources>

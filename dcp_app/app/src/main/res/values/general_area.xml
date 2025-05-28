@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="general_area">
+        <item>전자정보관</item>
+        <item>응용공학관</item>
+        <item>어문관</item>
+        <item>센텀캠퍼스</item>
+        <item>산학협력관</item>
+        <item>보건의료관</item>
+        <item>민석스포츠센타</item>
+        <item>디자인홀</item>
+        <item>뉴 밀레니엄관</item>
+        <item>글로벌빌리지</item>
+        <item>그린홀</item>
+        <item>국제협력관</item>
+        <item>국제관</item>
+        <item>경영관</item>
+        <item>U-IT관</item>
+    </string-array>
+</resources>

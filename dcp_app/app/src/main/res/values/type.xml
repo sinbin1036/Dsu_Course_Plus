@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type">
+        <item>교양필수</item>
+        <item>교선균형</item>
+        <item>전공선택</item>
+        <item>전공필수</item>
+    </string-array>
+</resources>

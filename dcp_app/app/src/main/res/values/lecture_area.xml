@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="lecture_area">
+        <item>인간과역사</item>
+        <item>사회와가치</item>
+        <item>자연과기술</item>
+        <item>문학과예술</item>
+        <item>세계와문화</item>
+    </string-array>
+</resources>
