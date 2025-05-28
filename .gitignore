@@ -1,8 +1,29 @@
-#크롬드라이버 파일 제외
-.chromedriver/
+# === Android 관련 ===
+*.iml
+.gradle/
+.idea/
+local.properties
+.DS_Store
 
-#파이썬 캐시 파일
+# Android Studio 자동 생성 파일
+.idea/caches/
+.idea/libraries/
+.idea/modules.xml
+.idea/workspace.xml
+.idea/navEditor.xml
+.idea/assetWizardSettings.xml
+
+# Android 빌드 결과물
+/build/
+dcp_app/app/build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# === 크롬드라이버 제외 ===
+chromedriver/
+
+# === 파이썬 관련 ===
 __pycache__/
-
 *.exe
 dsu_courses.*
