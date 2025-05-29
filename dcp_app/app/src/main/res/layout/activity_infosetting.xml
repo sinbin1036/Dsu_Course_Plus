@@ -69,8 +69,8 @@
 
             <Spinner
                 android:id="@+id/lecture_area"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="130dp"
+                android:layout_height="45dp"
                 android:layout_marginTop="44dp"
                 android:layout_marginEnd="8dp"
                 android:entries="@array/lecture_area"
@@ -82,8 +82,8 @@
 
             <Spinner
                 android:id="@+id/general_area"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="130dp"
+                android:layout_height="45dp"
                 android:layout_marginTop="44dp"
                 android:layout_marginEnd="8dp"
                 android:entries="@array/general_area"
@@ -105,8 +105,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/timeRow"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -114,18 +114,18 @@
 
                 <Spinner
                     android:id="@+id/days"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="134dp"
+                    android:layout_height="43dp"
                     android:entries="@array/days_array"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.231" />
+                    app:layout_constraintVertical_bias="0.592" />
 
                 <EditText
                     android:id="@+id/editStartTime"
-                    android:layout_width="48dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="60dp"
+                    android:layout_height="70dp"
                     android:hint="1"
                     android:inputType="number"
                     android:textColor="@color/white"
@@ -137,15 +137,16 @@
 
                 <EditText
                     android:id="@+id/editEndTime"
-                    android:layout_width="48dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="60dp"
+                    android:layout_height="70dp"
+                    android:layout_marginStart="4dp"
                     android:hint="3"
                     android:inputType="number"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/editStartTime"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.229"
+                    app:layout_constraintVertical_bias="0.0"
                     tools:ignore="HardcodedText" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
