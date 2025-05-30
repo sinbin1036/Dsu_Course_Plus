@@ -38,11 +38,17 @@ class MainActivity : AppCompatActivity() {
         val btnLogout = drawerMenuView.findViewById<Button>(R.id.btnLogout)
         val btnHelp = drawerMenuView.findViewById<ImageView>(R.id.btnHelp)
 
+        // 로그아웃 버튼
         btnLogout.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
+            finish() // 현재 액티비티 종료 (옵션)
         }
+
+        // 물음표(Help) 버튼
         btnHelp.setOnClickListener {
-            // 도움말 처리
+            val intent = Intent(this, HelpActivity::class.java)
+            startActivity(intent)
+            drawerLayout.closeDrawer(GravityCompat.END) // 드로어 닫기
         }
     }
 }

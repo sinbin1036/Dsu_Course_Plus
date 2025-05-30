@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#444444"
+    android:padding="24dp">
+
+    <!-- 상단 제목 -->
+    <TextView
+        android:id="@+id/help_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="사용 설명서"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp"/>
+
+    <!-- 구분선 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#CCCCCC"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- 설명 영역: weight로 공간 분배 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="1. 로그인한 후 뜬 시간표 화면서 \uD83D\uDC64 클릭"
+            android:textSize="17sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="2. 자신의 학과를 넣고, 원하는 이수종류를 고른다"
+            android:textSize="17sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="3. 교선균형을 고를시 밑에 영역을 고를 수 있는게 생긴다"
+            android:textSize="17sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="4. 시간설정은 월~금까지 고른 후 찾고 싶은 교시를 넣는다. 추가로 필요시 추가로 건물정보도 반영한다"
+            android:textSize="17sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="12dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="5. 찾고 싶은 정보를 모두 기입한 후, 검색시작을 누르면 강의가 뜨며 원하는 강의를 선택한 후, 시간표에 잘 들어가는지 확인한다."
+            android:textSize="17sp"
+            android:textColor="#FFFFFF"/>
+    </LinearLayout>
+
+    <!-- 하단 공간 확보 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp" />
+
+    <!-- 나가기 버튼 (하단 고정) -->
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="180dp"
+        android:layout_height="48dp"
+        android:text="@string/btn_exit"
+        android:textColor="#444444"
+        android:textSize="16sp"
+        android:backgroundTint="@android:color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"/>
+</LinearLayout>
+
+

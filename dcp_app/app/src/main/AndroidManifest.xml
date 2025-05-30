@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cookandroid.dcp_app">
 
@@ -8,26 +9,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Dcp_app">
-
-
-    <!-- 시간표 화면 -->
-        <activity android:name=".MainActivity" />
-
-        <!-- 회원가입 화면 -->
-        <activity android:name=".SignUpActivity" />
-
-        <!-- 로그인 화면 (시작 화면) -->
+        <activity
+            android:name=".HelpActivity"
+            android:exported="false" />
+        <!-- 시간표 화면 -->
+        <activity android:name=".MainActivity" /> <!-- 회원가입 화면 -->
+        <activity android:name=".SignUpActivity" /> <!-- 로그인 화면 (시작 화면) -->
         <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".InfoSetting" />
-
     </application>
 
 </manifest>

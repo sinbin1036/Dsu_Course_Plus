@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">dcp_app</string>
+    <string name="btn_exit">나가기</string>
 </resources>
