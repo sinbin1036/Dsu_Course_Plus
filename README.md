@@ -110,9 +110,11 @@ pip install selenium
 
 ## 🤩 주요 API 명세
 
-```
-GET /subjects?day=화&time=3&type=전공
-```
+1. fast api 실행:
+`uvicorn main:app --host 0.0.0.0 --port 8000 --reload`
+
+2. ngrok도 서버 실행
+`ngrok http 8000`
 
 **응답 예시:**
 
