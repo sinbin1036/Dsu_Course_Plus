@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -39,7 +40,8 @@
             android:text="1. 로그인한 후 뜬 시간표 화면서 \uD83D\uDC64 클릭"
             android:textSize="17sp"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="12dp"
+            android:padding="24dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -47,7 +49,8 @@
             android:text="2. 자신의 학과를 넣고, 원하는 이수종류를 고른다"
             android:textSize="17sp"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="12dp"
+            android:padding="24dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -55,7 +58,8 @@
             android:text="3. 교선균형을 고를시 밑에 영역을 고를 수 있는게 생긴다"
             android:textSize="17sp"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="12dp"
+            android:padding="24dp"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -63,14 +67,16 @@
             android:text="4. 시간설정은 월~금까지 고른 후 찾고 싶은 교시를 넣는다. 추가로 필요시 추가로 건물정보도 반영한다"
             android:textSize="17sp"
             android:textColor="#FFFFFF"
-            android:layout_marginBottom="12dp"/>
+            android:layout_marginBottom="12dp"
+            android:padding="24dp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="5. 찾고 싶은 정보를 모두 기입한 후, 검색시작을 누르면 강의가 뜨며 원하는 강의를 선택한 후, 시간표에 잘 들어가는지 확인한다."
+            android:textColor="#FFFFFF"
             android:textSize="17sp"
-            android:textColor="#FFFFFF"/>
+            android:padding="24dp"/>
     </LinearLayout>
 
     <!-- 하단 공간 확보 -->
