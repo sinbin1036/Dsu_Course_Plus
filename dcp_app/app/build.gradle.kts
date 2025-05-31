@@ -1,8 +1,3 @@
-plugins {
-    alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
-}
-
 android {
     namespace = "com.cookandroid.dcp_app"
     compileSdk = 35
@@ -41,6 +36,13 @@ android {
     }
 }
 
+plugins {
+    id("com.android.application")
+    id("org.jetbrains.kotlin.android")
+    id("com.google.devtools.ksp")
+}
+
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -51,4 +53,13 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("com.squareup.moshi:moshi:1.14.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.2")
+    // ✅ Moshi Codegen
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+
+    // ✅ Room KSP (이미 OK)
+    ksp("androidx.room:room-compiler:2.5.0")
 }

@@ -38,8 +38,8 @@ def get_subjects(
     time_end: Optional[int] = Query(None),
     dept: Optional[str] = Query(None),
     professor: Optional[str] = Query(None),
-    lecture_area: Optional[str] = Query(None),
-    general_area: Optional[str] = Query(None)
+    lecture_area: Optional[str] = None,
+    general_area: Optional[str] = None
 ):
     print("=== [DEBUG] 쿼리 파라미터 ===")
     print(f"{day=}, {time_start=}, {time_end=}, {type=}, {dept=}, {professor=}")

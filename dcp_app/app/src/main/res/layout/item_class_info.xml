@@ -29,15 +29,20 @@
             android:paddingHorizontal="12dp"
             android:gravity="center"
             android:orientation="vertical">
+
             <TextView
-                android:text="교과번호"
-                android:textColor="#FFFFFF"
-                android:textSize="12sp"
+                android:id="@+id/class_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
                 android:maxLines="1"
-                android:ellipsize="end" />
+                android:text="123123"
+                android:textColor="#FFFFFF"
+                android:textSize="8sp" />
         </LinearLayout>
 
         <TextView
+            android:id="@+id/class_name"
             android:text="교과명/분반"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -54,6 +59,7 @@
             android:layout_marginHorizontal="8dp" />
 
         <TextView
+            android:id="@+id/professor"
             android:text="교수명"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -64,6 +70,7 @@
             android:ellipsize="end" />
 
         <TextView
+            android:id="@+id/credit"
             android:text="학점"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -74,6 +81,7 @@
             android:ellipsize="end" />
 
         <TextView
+            android:id="@+id/schedule"
             android:text="강의 시간"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
