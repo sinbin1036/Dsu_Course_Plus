@@ -2,196 +2,205 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:textColor="#FFFFFF"
     android:background="#444444">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/frameSearchArea"
-        android:layout_width="365dp"
-        android:layout_height="246dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="16dp"
-        android:padding="16dp"
-        app:cardBackgroundColor="#555555"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
+    <!-- 상단 Guideline -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="80dp" />
+
+    <!-- 교양/필수 + (조건부) extraFilter -->
+    <TextView
+        android:id="@+id/label_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="교양/필수"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="@id/guidelineTop"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <Spinner
+        android:id="@+id/type"
+        android:layout_width="120dp"
+        android:layout_height="48dp"
+        android:entries="@array/type"
+        app:layout_constraintTop_toTopOf="@id/guidelineTop"
+        app:layout_constraintStart_toEndOf="@id/label_type"
+        app:layout_constraintBaseline_toBaselineOf="@id/label_type"
+        android:layout_marginStart="8dp"/>
+
+    <Spinner
+        android:id="@+id/lectureArea"
+        android:layout_width="120dp"
+        android:layout_height="48dp"
+        android:entries="@array/lecture_area"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="@id/guidelineTop"
+        app:layout_constraintStart_toEndOf="@id/type"
+        app:layout_constraintBaseline_toBaselineOf="@id/type"
+        android:layout_marginStart="8dp"/>
+
+    <!-- 학과/학년 한 줄 -->
+    <LinearLayout
+        android:id="@+id/row_dept_grade"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/type"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"
+        android:gravity="center_vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <!-- 학과/학년 라벨 -->
+        <TextView
+            android:id="@+id/label_dept_grade"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="학과/학년"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:layout_marginEnd="12dp"
+            android:labelFor="@id/dept"/>
 
-            <!-- 전공 선택 -->
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/majorRow"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
+        <!-- 학과 입력 -->
+        <EditText
+            android:id="@+id/dept"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:hint="학과"
+            android:inputType="text"
+            android:textColor="@color/black"
+            android:background="@android:drawable/editbox_background_normal"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"/>
 
-                <!-- 첫 번째 전공 입력 EditText -->
+        <!-- 학년 선택 -->
+        <Spinner
+            android:id="@+id/grade"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:entries="@array/grade"
+            android:backgroundTint="#fff"
+            android:layout_marginStart="8dp"/>
+    </LinearLayout>
 
-                <!-- 전공 Spinner (텍스트 대신) -->
+    <!-- 시간 설정 -->
+    <TextView
+        android:id="@+id/label_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="시간"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/row_dept_grade"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"/>
 
-                <EditText
-                    android:id="@+id/dept"
-                    android:layout_width="239dp"
-                    android:layout_height="41dp"
-                    android:layout_marginStart="8dp"
-                    android:background="@android:drawable/editbox_background_normal"
-                    android:hint="학과"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toEndOf="@id/type"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0" />
+    <Spinner
+        android:id="@+id/days"
+        android:layout_width="80dp"
+        android:layout_height="48dp"
+        android:entries="@array/days_array"
+        app:layout_constraintTop_toBottomOf="@id/row_dept_grade"
+        app:layout_constraintStart_toEndOf="@id/label_time"
+        app:layout_constraintBaseline_toBaselineOf="@id/label_time"
+        android:layout_marginStart="8dp"/>
+<!--    @string/start_time_hint (hint 원본)-->
+    <EditText
+        android:id="@+id/editStartTime"
+        android:layout_width="60dp"
+        android:layout_height="48dp"
+        android:hint="1"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/row_dept_grade"
+        app:layout_constraintStart_toEndOf="@id/days"
+        app:layout_constraintBaseline_toBaselineOf="@id/days"
+        android:layout_marginStart="8dp"/>
 
-                <Spinner
-                    android:id="@+id/type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:entries="@array/type"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+    <!--    @string/end_time_hint (hint 원본)-->
+    <EditText
+        android:id="@+id/editEndTime"
+        android:layout_width="60dp"
+        android:layout_height="48dp"
+        android:hint="2"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/row_dept_grade"
+        app:layout_constraintStart_toEndOf="@id/editStartTime"
+        app:layout_constraintBaseline_toBaselineOf="@id/editStartTime"
+        android:layout_marginStart="8dp"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- 건물/강의실 + 건물검색필터 -->
+    <TextView
+        android:id="@+id/label_building"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="건물/강의실"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/editEndTime"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"/>
 
-            <Spinner
-                android:id="@+id/lecture_area"
-                android:layout_width="130dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="44dp"
-                android:layout_marginEnd="8dp"
-                android:entries="@array/lecture_area"
-                android:visibility="invisible"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.905"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/majorRow" />
+    <Spinner
+        android:id="@+id/generalArea"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:entries="@array/general_area"
+        app:layout_constraintTop_toBottomOf="@id/editEndTime"
+        app:layout_constraintStart_toEndOf="@id/label_building"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@id/label_building"
+        android:layout_marginStart="8dp"/>
 
-            <Spinner
-                android:id="@+id/general_area"
-                android:layout_width="130dp"
-                android:layout_height="45dp"
-                android:layout_marginTop="44dp"
-                android:layout_marginEnd="8dp"
-                android:entries="@array/general_area"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.133"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/majorRow" />
-
-            <TextView
-                android:id="@+id/textTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="108dp"
-                android:text="시간 설정"
-                android:textColor="#FFFFFF"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/majorRow" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/timeRow"
-                android:layout_width="0dp"
-                android:layout_height="70dp"
-                android:layout_marginTop="4dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textTime">
-
-                <Spinner
-                    android:id="@+id/days"
-                    android:layout_width="134dp"
-                    android:layout_height="43dp"
-                    android:entries="@array/days_array"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.592" />
-
-                <EditText
-                    android:id="@+id/editStartTime"
-                    android:layout_width="60dp"
-                    android:layout_height="70dp"
-                    android:hint="1"
-                    android:inputType="number"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/days"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.229"
-                    tools:ignore="HardcodedText" />
-
-                <EditText
-                    android:id="@+id/editEndTime"
-                    android:layout_width="60dp"
-                    android:layout_height="70dp"
-                    android:layout_marginStart="4dp"
-                    android:hint="3"
-                    android:inputType="number"
-                    android:textColor="@color/white"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/editStartTime"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    tools:ignore="HardcodedText" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
+    <!--    @string/search (text 원본)-->
+    <!-- 검색 버튼 -->
     <Button
         android:id="@+id/btnSearch"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
-        android:text="검색 시작"
-        android:textColor="#000000"
-        app:layout_constraintTop_toBottomOf="@id/frameSearchArea"
+        android:layout_height="48dp"
+        android:text="검색"
+        android:backgroundTint="#3F51B5"
+        android:textColor="#fff"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/generalArea"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="24dp"/>
 
-    <ScrollView
-        android:id="@+id/scrollResults"
+    <!-- 결과 컨테이너 -->
+    <LinearLayout
+        android:id="@+id/resultContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/btnSearch"
+        app:layout_constraintBottom_toTopOf="@id/btnExit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/btnExit">
-
-        <LinearLayout
-            android:id="@+id/resultContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"/>
 
     <!-- 나가기 버튼 -->
     <Button
         android:id="@+id/btnExit"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="나가기"
+        android:text="@string/btn_exit"
         android:backgroundTint="#FFFFFF"
         android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -33,50 +33,110 @@ class InfoSetting : AppCompatActivity() {
         }
 
         ArrayAdapter.createFromResource(
-            this,
-            R.array.type,
-            android.R.layout.simple_spinner_item
+            this, R.array.type, android.R.layout.simple_spinner_item
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.type.adapter = adapter
         }
 
-        binding.type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?, view: View?, position: Int, id: Long
-            ) {
-                val selected = parent?.getItemAtPosition(position).toString()
-                binding.lectureArea.visibility = if (selected == "교선균형") View.VISIBLE else View.INVISIBLE
-            }
+        ArrayAdapter.createFromResource(
+            this, R.array.lecture_area, android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.lectureArea.adapter = adapter
+        }
 
+        ArrayAdapter.createFromResource(
+            this, R.array.grade, android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.grade.adapter = adapter
+        }
+
+        ArrayAdapter.createFromResource(
+            this, R.array.general_area, android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.generalArea.adapter = adapter
+        }
+
+        ArrayAdapter.createFromResource(
+            this, R.array.days_array, android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.days.adapter = adapter
+        }
+
+        binding.type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val selected = parent?.getItemAtPosition(position).toString()
+
+                binding.lectureArea.visibility = if (selected == "교선균형") View.VISIBLE else View.GONE
+                binding.grade.visibility = if (selected == "교양필수" || selected.startsWith("전공")) View.VISIBLE else View.GONE
+                binding.dept.visibility = if (selected.startsWith("전공")) View.VISIBLE else View.GONE
+
+                if (selected == "교양필수") {
+                    val twoYearAdapter = ArrayAdapter.createFromResource(
+                        this@InfoSetting, R.array.grade_two_years, android.R.layout.simple_spinner_item
+                    ).apply {
+                        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    }
+                    binding.grade.adapter = twoYearAdapter
+                } else {
+                    val fullAdapter = ArrayAdapter.createFromResource(
+                        this@InfoSetting, R.array.grade, android.R.layout.simple_spinner_item
+                    ).apply {
+                        setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    }
+                    binding.grade.adapter = fullAdapter
+                }
+            }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
         binding.btnSearch.setOnClickListener {
             val type = binding.type.selectedItem.toString()
             val dept = binding.dept.text.toString()
+            val grade = binding.grade.selectedItem?.toString()
             val day = binding.days.selectedItem.toString()
             val start = binding.editStartTime.text.toString()
             val end = binding.editEndTime.text.toString()
-            val lectureArea = binding.lectureArea.selectedItem?.toString()?.takeIf { it.isNotBlank() }
-            val generalArea = binding.generalArea.selectedItem?.toString()?.takeIf { it.isNotBlank() }
+            val lectureArea = binding.lectureArea.selectedItem?.toString()
+            val generalArea = binding.generalArea.selectedItem?.toString()
 
             CoroutineScope(Dispatchers.IO).launch {
-                fetchSubjects(type, dept, day, start, end, lectureArea, generalArea)
+                val filteredParams = when (type) {
+                    "교양필수" -> listOf("day", "start", "end", "grade")
+                    "교선균형" -> listOf("day", "start", "end", "lectureArea")
+                    "전공필수", "전공선택" -> listOf("dept", "grade")
+                    else -> emptyList()
+                }
+
+                fetchSubjects(
+                    type = type,
+                    dept = if ("dept" in filteredParams) dept else "",
+                    grade = if ("grade" in filteredParams) grade else null,
+                    day = if ("day" in filteredParams) day else "",
+                    start = if ("start" in filteredParams) start else "",
+                    end = if ("end" in filteredParams) end else "",
+                    lectureArea = if ("lectureArea" in filteredParams) lectureArea else null,
+                    generalArea = if ("generalArea" in filteredParams) generalArea else null
+                )
             }
         }
     }
 
     private fun fetchSubjects(
-        type: String = "전공선택",
-        dept: String = "소프트웨어학과",
-        day: String = "월",
-        start: String = "2",
-        end: String = "3",
+        type: String = "",
+        dept: String = "",
+        grade: String? = null,
+        day: String = "",
+        start: String = "",
+        end: String = "",
         lectureArea: String? = null,
         generalArea: String? = null
     ) {
-        val baseUrl = "https://48ca-182-230-193-83.ngrok-free.app/subjects"
+        val baseUrl = "https://d193-182-230-193-83.ngrok-free.app/subjects"
         val params = mutableListOf<String>()
 
         if (type.isNotBlank()) params.add("type=${URLEncoder.encode(type, "UTF-8")}")
@@ -84,9 +144,10 @@ class InfoSetting : AppCompatActivity() {
         if (start.isNotBlank()) params.add("time_start=$start")
         if (end.isNotBlank()) params.add("time_end=$end")
         if (dept.isNotBlank()) params.add("dept=${URLEncoder.encode(dept, "UTF-8")}")
-        // 🔕 임시로 lecture_area, general_area 미전송 (쿼리 제외 테스트용)
-        // if (!lectureArea.isNullOrBlank()) params.add("lecture_area=${URLEncoder.encode(lectureArea, "UTF-8")}")
-        // if (!generalArea.isNullOrBlank()) params.add("general_area=${URLEncoder.encode(generalArea, "UTF-8")}")
+        grade?.let { params.add("grade=${URLEncoder.encode(it, "UTF-8")}") }
+        lectureArea?.let { params.add("lecture_area=${URLEncoder.encode(it, "UTF-8")}") }
+        generalArea?.let { params.add("general_filter=${URLEncoder.encode(it, "UTF-8")}") }
+
         val url = "$baseUrl?${params.joinToString("&")}"
         Log.d("API_REQUEST_URL", url)
 
@@ -121,12 +182,7 @@ class InfoSetting : AppCompatActivity() {
 
     private fun displaySubjects(subjects: List<SubjectInfo>) {
         binding.resultContainer.removeAllViews()
-
-        Log.d("displaySubjects", "받은 subject 개수: ${subjects.size}")
-
         for ((index, subject) in subjects.withIndex()) {
-            Log.d("displaySubjects", "[$index] subject: $subject")
-
             try {
                 val cardView = layoutInflater.inflate(R.layout.item_class_info, binding.resultContainer, false)
 
@@ -141,6 +197,23 @@ class InfoSetting : AppCompatActivity() {
                 txtProfessor.text = subject.professor ?: "-"
                 txtCredit.text = subject.credit?.toString() ?: "-"
                 txtSchedule.text = subject.schedule?.joinToString(", ") { "${it.day} ${it.time}교시" } ?: "-"
+
+                cardView.setOnClickListener {
+                    val existing = MainActivity.timetableData.any { added ->
+                        added.schedule.any { addedSlot ->
+                            subject.schedule.any { newSlot ->
+                                addedSlot.day == newSlot.day && addedSlot.time == newSlot.time
+                            }
+                        }
+                    }
+                    if (existing) {
+                        Toast.makeText(this@InfoSetting, "해당 시간에 이미 등록된 강의가 있습니다.", Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
+
+                    MainActivity.timetableData.add(subject)
+                    Toast.makeText(this@InfoSetting, "과목이 시간표에 추가됨!", Toast.LENGTH_SHORT).show()
+                }
 
                 binding.resultContainer.addView(cardView)
             } catch (e: Exception) {
@@ -171,4 +244,3 @@ data class Schedule(
     val day: String,
     val time: Int
 )
-

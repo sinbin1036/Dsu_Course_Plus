@@ -37,12 +37,12 @@ def get_subjects(
     time_start: Optional[int] = Query(None),
     time_end: Optional[int] = Query(None),
     dept: Optional[str] = Query(None),
-    professor: Optional[str] = Query(None),
+    grade: Optional[str] = Query(None),
     lecture_area: Optional[str] = None,
     general_area: Optional[str] = None
 ):
     print("=== [DEBUG] 쿼리 파라미터 ===")
-    print(f"{day=}, {time_start=}, {time_end=}, {type=}, {dept=}, {professor=}")
+    print(f"{day=}, {time_start=}, {time_end=}, {type=}, {dept=}, {grade=}")
 
     if not os.path.exists(DB_PATH):
         raise HTTPException(status_code=500, detail="DB 파일을 찾을 수 없습니다")
@@ -78,10 +78,10 @@ def get_subjects(
         params.append(dept)
     if lecture_area:
         query += " AND s.lecture_area LIKE ?"
-        params.append(f"{lecture_area}-%")
-    if professor:
-        query += " AND s.professor LIKE ?"
-        params.append(f"%{professor}%")
+        params.append(lecture_area)
+    if grade:
+        query += " AND s.grade = ?"
+        params.append(grade)
 
     query += " GROUP BY s.id"
 

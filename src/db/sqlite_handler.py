@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS schedules (
 """)
 
 # JSON 로드
-with open(json_path, "r", encoding="utf-8") as f:
+with open(json_path, "r", encoding="utf-8-sig") as f:
     data = json.load(f)
 
 # INSERT
