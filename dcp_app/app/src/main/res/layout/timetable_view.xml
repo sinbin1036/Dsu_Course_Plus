@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/timeTableGrid"
+    android:layout_width="371dp"
+    android:layout_height="613dp"
+    android:background="@drawable/bg_table_corner"
+    android:columnCount="6"
+    android:orientation="horizontal"
+    android:padding="2dp">
+
+    <!-- 헤더 Row -->
+    <TextView
+        style="@style/DayCell"
+        android:layout_width="55dp"
+        android:text="비고" />
+    <TextView style="@style/DayCell" android:text="월" />
+    <TextView style="@style/DayCell" android:text="화" />
+    <TextView style="@style/DayCell" android:text="수" />
+    <TextView style="@style/DayCell" android:text="목" />
+    <TextView style="@style/DayCell" android:text="금" />
+
+    <!-- 각 시간 행 (9시 ~ 4시) -->
+    <TextView style="@style/TimeCell" android:text="9" />
+    <TextView android:id="@+id/monCell1" style="@style/TableCell" />
+    <TextView android:id="@+id/tuesCell1" style="@style/TableCell" />
+    <TextView android:id="@+id/wedCell1" style="@style/TableCell" />
+    <TextView android:id="@+id/thuCell1" style="@style/TableCell" />
+    <TextView android:id="@+id/friCell1" style="@style/TableCell" />
+
+    <TextView style="@style/TimeCell" android:text="10" />
+    <TextView android:id="@+id/monCell2" style="@style/TableCell" />
+    <TextView android:id="@+id/tuesCell2" style="@style/TableCell" />
+    <TextView android:id="@+id/wedCell2" style="@style/TableCell" />
+    <TextView android:id="@+id/thuCell2" style="@style/TableCell" />
+    <TextView android:id="@+id/friCell2" style="@style/TableCell" />
+
+    <TextView style="@style/TimeCell" android:text="11" />
+    <TextView android:id="@+id/monCell3" style="@style/TableCell" />
+    <TextView android:id="@+id/tuesCell3" style="@style/TableCell" />
+    <TextView android:id="@+id/wedCell3" style="@style/TableCell" />
+    <TextView android:id="@+id/thuCell3" style="@style/TableCell" />
+    <TextView android:id="@+id/friCell3" style="@style/TableCell" />
+
+    <TextView style="@style/TimeCell" android:text="12" />
+    <TextView android:id="@+id/monCell4" style="@style/TableCell" />
+    <TextView android:id="@+id/tuesCell4" style="@style/TableCell" />
+    <TextView android:id="@+id/wedCell4" style="@style/TableCell" />
+    <TextView android:id="@+id/thuCell4" style="@style/TableCell" />
+    <TextView android:id="@+id/friCell4" style="@style/TableCell" />
+
+    <TextView style="@style/TimeCell" android:text="1" />
+    <TextView android:id="@+id/monCell5" style="@style/TableCell" />
+    <TextView android:id="@+id/tuesCell5" style="@style/TableCell" />
+    <TextView android:id="@+id/wedCell5" style="@style/TableCell" />
+    <TextView android:id="@+id/thuCell5" style="@style/TableCell" />
+    <TextView android:id="@+id/friCell5" style="@style/TableCell" />
+
+    <TextView style="@style/TimeCell" android:text="2" />
+    <TextView android:id="@+id/monCell6" style="@style/TableCell" />
+    <TextView android:id="@+id/tuesCell6" style="@style/TableCell" />
+    <TextView android:id="@+id/wedCell6" style="@style/TableCell" />
+    <TextView android:id="@+id/thuCell6" style="@style/TableCell" />
+    <TextView android:id="@+id/friCell6" style="@style/TableCell" />
+
+    <TextView style="@style/TimeCell" android:text="3" />
+    <TextView android:id="@+id/monCell7" style="@style/TableCell" />
+    <TextView android:id="@+id/tuesCell7" style="@style/TableCell" />
+    <TextView android:id="@+id/wedCell7" style="@style/TableCell" />
+    <TextView android:id="@+id/thuCell7" style="@style/TableCell" />
+    <TextView android:id="@+id/friCell7" style="@style/TableCell" />
+
+    <TextView style="@style/TimeCell" android:text="4" />
+    <TextView android:id="@+id/monCell8" style="@style/TableCell" />
+    <TextView android:id="@+id/tuesCell8" style="@style/TableCell" />
+    <TextView android:id="@+id/wedCell8" style="@style/TableCell" />
+    <TextView android:id="@+id/thuCell8" style="@style/TableCell" />
+    <TextView android:id="@+id/friCell8" style="@style/TableCell" />
+
+    <TextView style="@style/TimeCell" android:text="5" />
+    <TextView android:id="@+id/monCell9" style="@style/TableCell" />
+    <TextView android:id="@+id/tuesCell9" style="@style/TableCell" />
+    <TextView android:id="@+id/wedCell9" style="@style/TableCell" />
+    <TextView android:id="@+id/thuCell9" style="@style/TableCell" />
+    <TextView android:id="@+id/friCell9" style="@style/TableCell" />
+</GridLayout>

@@ -2,14 +2,15 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-
-
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp"
     android:backgroundTint="#EEEEEE"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
     android:padding="12dp">
 
     <LinearLayout
@@ -17,6 +18,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
+        android:descendantFocusability="blocksDescendants"
         android:background="@drawable/class_card"
         android:paddingHorizontal="8dp">
 
@@ -92,3 +94,4 @@
             android:ellipsize="end" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
+
