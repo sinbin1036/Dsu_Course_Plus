@@ -178,17 +178,23 @@
         android:layout_marginTop="24dp"/>
 
     <!-- 결과 컨테이너 -->
-    <LinearLayout
-        android:id="@+id/resultContainer"
+    <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:orientation="vertical"
         app:layout_constraintTop_toBottomOf="@id/btnSearch"
         app:layout_constraintBottom_toTopOf="@id/btnExit"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"/>
+        android:layout_marginBottom="16dp">
+
+        <LinearLayout
+            android:id="@+id/resultContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
     <!-- 나가기 버튼 -->
     <Button

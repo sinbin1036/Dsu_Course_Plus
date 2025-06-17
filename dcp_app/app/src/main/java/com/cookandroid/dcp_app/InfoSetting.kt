@@ -136,7 +136,7 @@ class InfoSetting : AppCompatActivity() {
         lectureArea: String? = null,
         generalArea: String? = null
     ) {
-        val baseUrl = "https://d193-182-230-193-83.ngrok-free.app/subjects"
+        val baseUrl = "https://31c9-182-230-193-83.ngrok-free.app/subjects"
         val params = mutableListOf<String>()
 
         if (type.isNotBlank()) params.add("type=${URLEncoder.encode(type, "UTF-8")}")
