@@ -47,10 +47,10 @@
 | 영역 | 기술 |
 |:--|:--|
 | 백어드 | Python + FastAPI |
-| DB | MySQL + SQLAlchemy |
+| DB | SQLite |
 | 크롤링 | Selenium (ChromeDriver) |
-| 앱 | Android Studio (Java or Kotlin), Retrofit |
-| API 테스트 | Swagger UI (FastAPI 내장) or Postman |
+| 앱 | Android Studio (Kotlin)|
+| API 테스트 | Swagger UI (FastAPI 내장)|
 
 ---
 
